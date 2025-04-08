@@ -10,12 +10,33 @@ import subprocess
 from django.conf import settings
 import json
 from .models import ScanList
+import threading
 
 
 # Helper function
 
-def clone_repo(id):
-    pass
+def scan_repo(repo_id):
+    scan_list = ScanList.objects.get(id = repo_id)
+    g = Github(scan_list.token)
+    repo = g.get_repo(int(repo_id))
+    clone_url = repo.clone_url
+
+    if repo.private:
+        clone_url = clone_url.replace("https://", f"https://{scan_list.token}@")
+
+    clone_path = os.path.join(f'{settings.BASE_DIR}/codebase', f'{repo.name}_{repo_id}')
+
+    if os.path.exists(clone_path):
+        print("Error: Path is in use")
+        return
+    
+    subprocess.run(['git', 'clone', clone_url, clone_path], check=True)
+    print('clone done')
+    os.rmdir(clone_path)
+    print('dir removal')
+
+    return
+
 
 
 
@@ -102,6 +123,8 @@ def github_webhook(request):
         return HttpResponse(status=405)
 
     payload = json.loads(request.body)
-    print(payload['repository']['id'])
+    repo_id = payload['repository']['id']
+    t = threading.Thread(target=scan_repo,args=(repo_id,))
+    t.start()
     return JsonResponse({"status": "ok"})
 
