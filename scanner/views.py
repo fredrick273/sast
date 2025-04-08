@@ -9,37 +9,39 @@ import os
 import subprocess
 from django.conf import settings
 import json
-from .models import ScanList
+from .models import ScanList, Reports
 import threading
 import shutil
 
 
 # Helper function
+# bearer scan ./juice-shop/ --format html --output report.html
 
 def scan_repo(repo_id):
     scan_list = ScanList.objects.get(repo_id = repo_id)
     g = Github(scan_list.token)
     repo = g.get_repo(int(repo_id))
     clone_url = repo.clone_url
-
+    commits = repo.get_commits(sha=repo.default_branch)
+    latest_commit = commits[0]
+    commit_id = latest_commit.sha
+    commit_url = latest_commit.html_url
+    print(commit_id,commit_url)
     if repo.private:
         clone_url = clone_url.replace("https://", f"https://{scan_list.token}@")
-
     clone_path = os.path.join(f'{settings.BASE_DIR}/codebase', f'{repo.name}_{repo_id}')
-
     if os.path.exists(clone_path):
         print("Error: Path is in use")
         return
-    
+    report = Reports(repo = scan_list)
+    report.save()
     subprocess.run(['git', 'clone', clone_url, clone_path], check=True)
     print('clone done')
+    subprocess.run(['bearer', 'scan', clone_path, '--format', 'html', '--ouput',os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.pdf')], check=True)
     shutil.rmtree(clone_path)
+    report.analysis_done = True
     print('dir removal')
-
     return
-
-
-
 
 @login_required
 def home(request):
@@ -85,39 +87,6 @@ def add_to_scanlist(request,id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
     
-
-@login_required
-def clone_or_pull_repo(request, repo_id):
-    try:
-        token = SocialToken.objects.get(account__user=request.user, account__provider='github')
-        g = Github(token.token)
-
-        repo = g.get_repo(int(repo_id))
-        clone_url = repo.clone_url
-        
-        if repo.private:
-            clone_url = clone_url.replace("https://", f"https://{token.token}@")
-
-        clone_path = os.path.join(f'{settings.BASE_DIR}/codebase', f'{repo.name}_{repo_id}')
-
-        if os.path.exists(clone_path):
-            try:
-                subprocess.run(['git', '-C', clone_path, 'pull'], check=True)
-                return JsonResponse({"status": "success", "message": f"Repository pulled successfully at {clone_path}"})
-            except subprocess.CalledProcessError as e:
-                return JsonResponse({"status": "error", "message": f"Failed to pull repository: {str(e)}"}, status=500)
-        else:
-            subprocess.run(['git', 'clone', clone_url, clone_path], check=True)
-            return JsonResponse({"status": "success", "message": f"Repository cloned successfully to {clone_path}"})
-
-    except SocialToken.DoesNotExist:
-        return JsonResponse({"status": "error", "message": "GitHub authentication token not found."}, status=403)
-    except subprocess.CalledProcessError as e:
-        return JsonResponse({"status": "error", "message": f"Git command failed: {str(e)}"}, status=500)
-    except Exception as e:
-        return JsonResponse({"status": "error", "message": str(e)}, status=500)
-    
-
 @csrf_exempt
 def github_webhook(request):
     if request.method != "POST":
