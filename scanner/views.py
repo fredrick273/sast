@@ -37,7 +37,7 @@ def scan_repo(repo_id):
     report.save()
     subprocess.run(['git', 'clone', clone_url, clone_path], check=True)
     print('clone done')
-    subprocess.run(['bearer', 'scan', clone_path, '--format', 'html', '--output',os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.pdf')], check=True)
+    subprocess.run(['bearer', 'scan', clone_path, '--format', 'html', '--output',os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.html')], check=True)
     shutil.rmtree(clone_path)
     report.analysis_done = True
     print('dir removal')
