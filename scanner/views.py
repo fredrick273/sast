@@ -39,7 +39,7 @@ def add_to_scanlist(request,id):
         g = Github(token.token)
         user = g.get_user()
         repo = g.get_repo(id)
-        webhook_url = request.build_absolute_uri(resolve_url('github-endpoint'))
+        webhook_url = request.build_absolute_uri(resolve_url('github_endpoint'))
 
         config = {
             'url': webhook_url,
