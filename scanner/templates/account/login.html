@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -424,7 +426,7 @@
             <div class="hero-content">
                 <h1>Ship faster with cloud computing</h1>
                 <p>Deploy your applications instantly with our zero-config platform. Focus on your code while we handle the infrastructure.</p>
-                <a href="#" target="_blank">
+                <a href="{% provider_login_url 'github' %}" target="_blank">
                     <button class="github-button">Sign in with GitHub</button>
                 </a>
             </div>
