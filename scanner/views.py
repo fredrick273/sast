@@ -11,6 +11,7 @@ from django.conf import settings
 import json
 from .models import ScanList
 import threading
+import shutil
 
 
 # Helper function
@@ -32,7 +33,7 @@ def scan_repo(repo_id):
     
     subprocess.run(['git', 'clone', clone_url, clone_path], check=True)
     print('clone done')
-    os.rmdir(clone_path)
+    shutil.rmtree(clone_path)
     print('dir removal')
 
     return
