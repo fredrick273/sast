@@ -92,6 +92,6 @@ def github_webhook(request):
         return HttpResponse(status=405)
 
     payload = json.loads(request.body)
-    print(payload)
+    print(payload['repository']['id'])
     return JsonResponse({"status": "ok"})
 
