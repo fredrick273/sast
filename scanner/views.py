@@ -8,9 +8,16 @@ from django.views.decorators.csrf import csrf_exempt
 import os
 import subprocess
 from django.conf import settings
-import hmac
-import hashlib
 import json
+from .models import ScanList
+
+
+# Helper function
+
+def clone_repo(id):
+    pass
+
+
 
 @login_required
 def home(request):
@@ -32,8 +39,7 @@ def add_to_scanlist(request,id):
         g = Github(token.token)
         user = g.get_user()
         repo = g.get_repo(id)
-        # webhook_url = request.build_absolute_uri(resolve_url('webhook-endpoint'))
-        webhook_url = 'https://discord.com/api/webhooks/1350039952280522822/NINap9sQ2Tm9GsMS-77Ts0WjJm0l2I9VFN0WrdFpktHUh0Ay91FFwGQ_zZC9FSCVYRQY/github'
+        webhook_url = request.build_absolute_uri(resolve_url('webhook-endpoint'))
 
         config = {
             'url': webhook_url,
@@ -47,6 +53,9 @@ def add_to_scanlist(request,id):
             events=['push'],
             active=True
         )
+
+        scan_list = ScanList(repo_id = id, token = token.token)
+        scan_list.save()
 
         return JsonResponse({'message': 'Webhook added successfully!', 'hook_id': hook.id})
     except SocialToken.DoesNotExist:
@@ -86,6 +95,7 @@ def clone_or_pull_repo(request, repo_id):
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)}, status=500)
     
+
 @csrf_exempt
 def github_webhook(request):
     if request.method != "POST":
