@@ -91,20 +91,6 @@ def github_webhook(request):
     if request.method != "POST":
         return HttpResponse(status=405)
 
-    # GitHub sends a secret token with X-Hub-Signature-256
-    signature = request.headers.get("X-Hub-Signature-256")
-    if signature is None:
-        return HttpResponseForbidden("Signature missing")
-
-    # Compute our own signature
-    secret = settings.GITHUB_WEBHOOK_SECRET.encode()
-    payload = request.body
-    expected_signature = "sha256=" + hmac.new(secret, payload, hashlib.sha256).hexdigest()
-
-    # Secure compare
-    if not hmac.compare_digest(expected_signature, signature):
-        return HttpResponseForbidden("Invalid signature")
-
     payload = json.loads(request.body)
     print(payload)
     return JsonResponse({"status": "ok"})
