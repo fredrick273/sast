@@ -16,7 +16,7 @@ import threading
 # Helper function
 
 def scan_repo(repo_id):
-    scan_list = ScanList.objects.get(id = repo_id)
+    scan_list = ScanList.objects.get(repo_id = repo_id)
     g = Github(scan_list.token)
     repo = g.get_repo(int(repo_id))
     clone_url = repo.clone_url
