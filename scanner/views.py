@@ -87,7 +87,7 @@ def add_to_scanlist(request,id):
             active=True
         )
 
-        scan_list = ScanList(repo_id = id, token = token.token)
+        scan_list = ScanList(repo_id = id, token = token.token,  user=request.user)
         scan_list.save()
 
         return JsonResponse({'message': 'Webhook added successfully!', 'hook_id': hook.id})
