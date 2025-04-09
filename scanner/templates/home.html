@@ -470,7 +470,7 @@
                 <div class="repo-item">
                     <span class="repo-icon">○</span>
                     <div class="repo-info">
-                        <a href="{% url reports repo.id %}" target="_blank">
+                        <a href="{% url 'reports' repo.id %}" target="_blank">
                             <span>{{ repo.name }}</span>
                         </a>
                         <span class="repo-date">{{ repo.time }}</span>
