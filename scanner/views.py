@@ -51,6 +51,7 @@ def home(request):
     repos = []
     scan_list = ScanList.objects.filter(token = token.token)
     print(scan_list)
+    print(token.token, ScanList.objects.all().first().token)
     for repo in scan_list:
         i = g.get_repo(int(repo.repo_id))
         r = Reports.objects.filter(repo = repo).first()
