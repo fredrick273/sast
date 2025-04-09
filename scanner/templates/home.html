@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Workspace - New Web Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #0d0d0d;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+        
+        .navbar {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #222;
+            background-color: #111;
+            width: 100%;
+        }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #222;
+        }
+        
+        .logo-btn {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        
+        .workspace {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            border-right: 1px solid #222;
+        }
+        
+        .workspace-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .workspace-avatar {
+            width: 24px;
+            height: 24px;
+            background-color: #9c50e9;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .workspace-name {
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .page-title {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            flex-grow: 1;
+        }
+        
+        .page-title-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 0 12px;
+            height: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+        
+        .search-box {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .search-btn {
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 0 12px;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .search-input {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 6px;
+        }
+        
+        .keyboard-shortcut {
+            margin-left: 8px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .action-button {
+            height: 100%;
+            border-left: 1px solid #222;
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 0 12px;
+            height: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-button.user {
+            width: 48px;
+        }
+        
+        .user-btn {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 24px;
+            height: 24px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Center the main content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .main-content {
+            padding: 24px 0;
+        }
+        
+        .content-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 16px;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+        
+        .step-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+        }
+        
+        .step-icon.complete {
+            background-color: #4caf50;
+        }
+        
+        .step-icon.active {
+            background-color: #3a3a3a;
+            border: 2px solid #9c50e9;
+        }
+        
+        .step-icon.pending {
+            background-color: #3a3a3a;
+        }
+        
+        .help-link {
+            margin-left: auto;
+            color: #999;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .source-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            margin-bottom: 16px;
+            font-weight: bold;
+        }
+        
+        .tab-group {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .tab.active {
+            background-color: #9c50e9;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #1a1a1a;
+            border: none;
+            border-radius: 4px;
+            color: white;
+        }
+        
+        .dropdown {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            background-color: #1a1a1a;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+        
+        .repo-list {
+            background-color: #1a1a1a;
+            border-radius: 4px;
+            max-height: 1000px;
+            overflow-y: auto;
+        }
+        
+        .repo-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+        
+        .repo-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+        
+        .repo-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .repo-date {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .name-section, .project-section {
+            margin-bottom: 24px;
+        }
+        
+        .field-label {
+            margin-bottom: 8px;
+            color: #ccc;
+        }
+        
+        .field-sublabel {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        
+        .optional-label {
+            font-size: 12px;
+            color: #999;
+            margin-left: 8px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: white;
+        }
+        
+        .project-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 0;
+            background-color: #111;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .project-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+        
+        .empty-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .empty-description {
+            color: #999;
+            margin-bottom: 24px;
+            max-width: 400px;
+        }
+        
+        .create-button {
+            padding: 8px 16px;
+            background-color: transparent;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .required-indicator {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .indicator-dot {
+            width: 4px;
+            height: 4px;
+            background-color: #999;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .flex-row {
+            display: flex;
+        }
+
+        /* Button hover effects */
+        .action-btn:hover, .workspace-btn:hover, .page-title-btn:hover, .search-btn:hover, .logo-btn:hover, .user-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <button class="logo-btn">
+                <div class="logo-icon"></div>
+            </button>
+        </div>
+        
+        <div class="page-title">
+            <button class="page-title-btn">
+                <span>◆ New Web Service</span>
+            </button>
+        </div>
+        
+        <div class="action-buttons">
+            <div class="action-button">
+                <button class="action-btn">
+                    <span>+ New</span>
+                </button>
+            </div>
+            
+            <div class="action-button user">
+                <button class="user-btn">
+                    <div class="user-avatar">G</div>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content with Container for Centering -->
+    <div class="container">
+        <div class="main-content">
+            <h1 class="content-title">Connected Repositories</h1>
+            
+            <div class="flex-row">
+                <div class="search-container" style="flex-grow: 1;">
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+            
+            <div class="repo-list">
+                {% for repo in repos %}
+                <div class="repo-item">
+                    <span class="repo-icon">○</span>
+                    <div class="repo-info">
+                        <span>repo.name</span>
+                        <span class="repo-date">repo.time</span>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="repo-item">
+                    <span class="repo-icon">○</span>
+                    <div class="repo-info">
+                        <span>chhh123 / chhh123.github.io</span>
+                        <span class="repo-date">Oct 27, 2024</span>
+                    </div>
+                </div>
+                
+                <div class="repo-item">
+                    <span class="repo-icon">○</span>
+                    <div class="repo-info">
+                        <span>fredrick273 / Healthcare-managment-system</span>
+                        <span class="repo-date">May 3, 2024</span>
+                    </div>
+                </div>
+                
+                <div class="repo-item">
+                    <span class="repo-icon">○</span>
+                    <div class="repo-info">
+                        <span>chhh123 / ▢ desktop-tutorial</span>
+                        <span class="repo-date">Mar 15, 2023</span>
+                    </div>
+                </div>
+                <div class="repo-item">
+                    <span class="repo-icon">○</span>
+                    <div class="repo-info">
+                        <span>chhh123 / ▢ desktop-tutorial</span>
+                        <span class="repo-date">Mar 15, 2023</span>
+                    </div>
+                </div>
+            </div> -->
+    
+        </div>
+    </div>
+</body>
+</html>

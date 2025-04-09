@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Platform - Deploy Faster</title>
+    <title>CodeScan - Automated Vulnerability Scanning</title>
     <style>
         body {
             margin: 0;
@@ -24,25 +24,22 @@
             position: relative;
         }
 
-        .menu-icon {
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-            margin-right: 1rem;
-        }
-
-        .nav-links {
-            list-style: none;
+        .logo {
             display: flex;
-            gap: 1rem;
-            margin: 0;
-            padding: 0;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .nav-links a {
-            text-decoration: none;
+        .scanner-logo {
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text {
             color: #fff;
-            font-size: 0.9rem;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
         .navbar-right {
@@ -68,30 +65,6 @@
 
         .search-icon:hover .search-image {
             transform: scale(1.2);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        button {
-            font-size: 0.9rem;
-        }
-
-        .sign-up {
-            background-color: #138c3d;
-            border: none;
-            padding: 0.5rem 1rem;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .sign-up:hover {
-            background-color: #0f6d2a;
-            transform: scale(1.1);
-            transition: all 0.3s ease;
         }
 
         .hero {
@@ -125,18 +98,27 @@
         }
 
         .github-button {
-            background-color: #138c3d;
-            border: none;
+            background-color: #24292e;
+            border: 1px solid #c9d1d9;
             padding: 0.75rem 1.5rem;
             color: #fff;
             cursor: pointer;
             border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
 
         .github-button:hover {
-            background-color: #0f6d2a;
+            background-color: #353a40;
             transform: translateY(-3px);
-            transition: all 0.3s ease;
+        }
+
+        .github-logo {
+            width: 20px;
+            height: 20px;
         }
 
         .hero-graphic {
@@ -397,16 +379,23 @@
 </head>
 <body>
     <header class="navbar">
-        <div class="menu-icon">☰</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">Pricing</a></li>
-                <li><a href="#">Documentation</a></li>
-                <li><a href="#">Inbox</a></li>
-            </ul>
-        </nav>
+        <div class="logo">
+            <!-- Exact document with magnifying glass logo as shown in the image -->
+            <svg class="scanner-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 80" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Document with folded corner -->
+                <path d="M14,4 h24 l14,14 v54 a4,4 0 0 1-4,4 h-34 a4,4 0 0 1-4-4 v-64 a4,4 0 0 1,4-4 z" stroke-linejoin="round"/>
+                
+                <!-- Folded corner -->
+                <path d="M38,4 v14 h14" stroke-linejoin="round"/>
+                
+                <!-- Magnifying glass circle -->
+                <circle cx="32" cy="45" r="10"/>
+                
+                <!-- Handle -->
+                <path d="M39,52 l10,10" stroke-linecap="round" stroke-width="3"/>
+              </svg>
+            <span class="logo-text">CodeVulnScan</span>
+        </div>
         <div class="navbar-right">
             <div class="search-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -414,20 +403,21 @@
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </div>
-            <div class="auth-buttons">
-                <button class="sign-up">Log In</button>
-                <button class="sign-up">Sign Up</button>
-            </div>
         </div>
     </header>
 
     <main>
         <section class="hero">
             <div class="hero-content">
-                <h1>Ship faster with cloud computing</h1>
-                <p>Deploy your applications instantly with our zero-config platform. Focus on your code while we handle the infrastructure.</p>
+                <h1>Automated Code Security Scanning</h1>
+                <p>Find vulnerabilities in your code before hackers do. Our automated scanning platform detects security issues instantly with zero configuration.</p>
                 <a href="{% provider_login_url 'github' %}" target="_blank">
-                    <button class="github-button">Sign in with GitHub</button>
+                    <button class="github-button">
+                        <svg class="github-logo" viewBox="0 0 16 16" fill="white">
+                            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        Sign in with GitHub
+                    </button>
                 </a>
             </div>
             <div class="hero-graphic">
@@ -439,10 +429,10 @@
                 </div>
                 <div class="circle circle3"></div>
                 <div class="deploy-status">
-                    <p class="deploying-text">Deploying...</p>
+                    <p class="deploying-text">Scanning...</p>
                     <div class="status">
-                        <span class="success">Build succeeded</span>
-                        <span class="region">Region: India</span>
+                        <span class="success">2 Issues Found</span>
+                        <span class="region">Severity: High</span>
                     </div>
                 </div>
             </div>
@@ -450,29 +440,29 @@
 
         <section class="info-section">
             <div class="info-content">
-                <h2>Built for developers, by developers</h2>
+                <h2>Find vulnerabilities before they become breaches</h2>
                 <div>
-                    <p>Our platform is designed with developers in mind. We've eliminated the complexity of cloud infrastructure so you can focus on what matters most – writing great code.</p>
-                    <p>With automatic deployments, instant rollbacks, and built-in monitoring, we provide everything you need to build and scale your applications.</p>
+                    <p>Our platform is designed with security in mind. We've built sophisticated scanning algorithms that identify code vulnerabilities before they make it to production.</p>
+                    <p>With automated scans, detailed reports, and remediation suggestions, we provide everything you need to secure your applications from day one.</p>
                 </div>
             </div>
         </section>
 
         <section class="features">
             <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-title">Lightning Fast Deployments</div>
-                <p>From code commit to production in seconds, not minutes. Our optimized build pipeline gets your changes live instantly.</p>
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">Continuous Security Scanning</div>
+                <p>Scan every commit and pull request automatically. Our engine detects vulnerabilities as soon as they appear in your codebase.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <div class="feature-title">Zero-Config Scaling</div>
-                <p>Your applications automatically scale up and down based on demand, without any manual intervention required.</p>
+                <div class="feature-icon">🔍</div>
+                <div class="feature-title">Multi-Language Support</div>
+                <p>From JavaScript to Python, Java to Go, we analyze codebases in all major programming languages and frameworks.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📊</div>
-                <div class="feature-title">Real-Time Monitoring</div>
-                <p>Monitor the health and performance of your applications with built-in metrics and logs, all in one place.</p>
+                <div class="feature-title">Actionable Reports</div>
+                <p>Get prioritized remediation steps and detailed explanations for each vulnerability, helping your team fix issues fast.</p>
             </div>
         </section>
     </main>
@@ -485,7 +475,7 @@
             <a href="#">Blog</a>
             <a href="#">Contact</a>
         </div>
-        <p>© 2025 Cloud Platform. All rights reserved.</p>
+        <p>© 2025 CodeVulnScan. All rights reserved.</p>
     </footer>
 </body>
 </html>

@@ -3,7 +3,7 @@ from allauth.socialaccount.models import SocialToken
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from github import Github
-from django.shortcuts import resolve_url
+from django.shortcuts import resolve_url,render
 from django.views.decorators.csrf import csrf_exempt
 import os
 import subprocess
@@ -49,11 +49,18 @@ def home(request):
     g = Github(token.token)
     user = g.get_user()
     repos = []
-    for repo in user.get_repos():
-        print(repo.id, repo.full_name)
-        repos.append(repo.full_name)
-    
-    return JsonResponse({'repo':repos})
+    scan_list = ScanList.objects.filter(token = token.token)
+    for repo in scan_list:
+        i = g.get_repo(int(repo.repo_id))
+        r = Reports.objects.filter(repo = repo).first()
+        repos.append({
+            'name':i.full_name,
+            'id': i.id,
+            'url': i.html_url,
+            'time': r.datetime
+        })
+
+    return render(request, 'home.html',context = {'repos':repos})
 
 
 @login_required
