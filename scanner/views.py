@@ -54,7 +54,7 @@ def home(request):
         r = Reports.objects.filter(repo = repo).first()
         repos.append({
             'name':i.full_name,
-            'id': i.id,
+            'id': repo.id,
             'time': r.datetime if r else None
         })
 
