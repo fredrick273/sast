@@ -47,11 +47,8 @@ def scan_repo(repo_id):
 def home(request):
     token = SocialToken.objects.get(account__user=request.user, account__provider='github')
     g = Github(token.token)
-    user = g.get_user()
     repos = []
-    scan_list = ScanList.objects.filter(token = token.token)
-    print(scan_list)
-    print(token.token, ScanList.objects.all().first().token)
+    scan_list = ScanList.objects.filter(user = request.user)
     for repo in scan_list:
         i = g.get_repo(int(repo.repo_id))
         r = Reports.objects.filter(repo = repo).first()
