@@ -55,7 +55,6 @@ def home(request):
         repos.append({
             'name':i.full_name,
             'id': i.id,
-            'url': i.html_url,
             'time': r.datetime if r else None
         })
 
@@ -104,3 +103,8 @@ def github_webhook(request):
     t.start()
     return JsonResponse({"status": "ok"})
 
+@login_required
+def reports(request,id):
+    scan_list = ScanList.objects.get(id = id)
+    r = Reports.objects.filter(repo = scan_list)
+    return render(request,'reports.html',context={'reports':r})

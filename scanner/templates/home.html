@@ -470,11 +470,14 @@
                 <div class="repo-item">
                     <span class="repo-icon">○</span>
                     <div class="repo-info">
-                        <span>repo.name</span>
-                        <span class="repo-date">repo.time</span>
+                        <a href="{% url reports repo.id %}" target="_blank">
+                            <span>{{ repo.name }}</span>
+                        </a>
+                        <span class="repo-date">{{ repo.time }}</span>
                     </div>
                 </div>
                 {% endfor %}
+
                 <!-- <div class="repo-item">
                     <span class="repo-icon">○</span>
                     <div class="repo-info">
