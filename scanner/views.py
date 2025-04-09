@@ -107,4 +107,5 @@ def github_webhook(request):
 def reports(request,id):
     scan_list = ScanList.objects.get(id = id)
     r = Reports.objects.filter(repo = scan_list)
-    return render(request,'reports.html',context={'reports':r})
+    media_url = settings.MEDIA_URL
+    return render(request,'reports.html',context={'media_url':media_url,'reports':r})
