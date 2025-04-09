@@ -50,6 +50,7 @@ def home(request):
     user = g.get_user()
     repos = []
     scan_list = ScanList.objects.filter(token = token.token)
+    print(scan_list)
     for repo in scan_list:
         i = g.get_repo(int(repo.repo_id))
         r = Reports.objects.filter(repo = repo).first()
@@ -57,7 +58,7 @@ def home(request):
             'name':i.full_name,
             'id': i.id,
             'url': i.html_url,
-            'time': r.datetime
+            'time': r.datetime if r else None
         })
 
     return render(request, 'home.html',context = {'repos':repos})
