@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Workspace - New Web Service</title>
+    <title>Add Repository</title>
     <style>
         * {
             margin: 0;
@@ -431,6 +431,7 @@
             text-decoration: none;  /* Keeps it clean on hover too */
             color: inherit;         /* Optional: or set a custom hover color */
         }
+
     </style>
 </head>
 <body>
@@ -466,7 +467,7 @@
     <!-- Main Content with Container for Centering -->
     <div class="container">
         <div class="main-content">
-            <h1 class="content-title">Connected Repositories</h1>
+            <h1 class="content-title">Add Repository to Scan List</h1>
             
             <div class="flex-row">
                 <div class="search-container" style="flex-grow: 1;">
@@ -479,10 +480,9 @@
                 <div class="repo-item">
                     <span class="repo-icon">○</span>
                     <div class="repo-info">
-                        <a href="{% url 'reports' repo.id %}" target="_blank">
+                        <a href="{% url 'add_to_scanlist' repo.id %}" target="_blank">
                             <span>{{ repo.name }}</span>
                         </a>
-                        <span class="repo-date">{{ repo.time }}</span>
                     </div>
                 </div>
                 {% endfor %}

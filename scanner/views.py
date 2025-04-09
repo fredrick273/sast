@@ -3,7 +3,7 @@ from allauth.socialaccount.models import SocialToken
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from github import Github
-from django.shortcuts import resolve_url,render
+from django.shortcuts import resolve_url,render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import os
 import subprocess
@@ -40,6 +40,9 @@ def scan_repo(repo_id):
     subprocess.run(['bearer', 'scan', clone_path, '--format', 'html', '--output',os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.html')])
     shutil.rmtree(clone_path)
     report.analysis_done = True
+    report.commit_id = commit_id
+    report.commit_url = commit_url
+    report.save()
     print('dir removal')
     return
 
@@ -86,12 +89,27 @@ def add_to_scanlist(request,id):
         scan_list = ScanList(repo_id = id, token = token.token,  user=request.user)
         scan_list.save()
 
-        return JsonResponse({'message': 'Webhook added successfully!', 'hook_id': hook.id})
+        return redirect('reports',scan_list.id)
     except SocialToken.DoesNotExist:
         return JsonResponse({'error': 'GitHub token not found. Please reconnect your GitHub account.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
     
+@login_required
+def add_list(request):
+    token = SocialToken.objects.get(account__user=request.user, account__provider='github')
+    g = Github(token.token)
+    user = g.get_user()
+    repos = []
+    for repo in user.get_repos():
+        if not ScanList.objects.filter(repo_id=repo.id).exists():
+            print(repo.id, repo.full_name)
+            repos.append({
+                'name':repo.full_name,
+                'id': repo.id,
+            })
+    return render(request,'add_list.html',context={'repos':repos})
+
 @csrf_exempt
 def github_webhook(request):
     if request.method != "POST":
@@ -106,6 +124,6 @@ def github_webhook(request):
 @login_required
 def reports(request,id):
     scan_list = ScanList.objects.get(id = id)
-    r = Reports.objects.filter(repo = scan_list)
+    r = Reports.objects.filter(repo = scan_list).order_by('-datetime')
     media_url = settings.MEDIA_URL
     return render(request,'reports.html',context={'media_url':media_url,'reports':r})
