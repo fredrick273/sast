@@ -12,6 +12,7 @@ import json
 from .models import ScanList, Reports
 import threading
 import shutil
+import re
 
 
 # Helper function
@@ -44,6 +45,17 @@ def scan_repo(repo_id):
     report.commit_url = commit_url
     report.save()
     print('dir removal')
+    with open(os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.html'), 'r', encoding='utf-8') as file:
+        content = file.read()
+    # Replace the CSS block
+    updated_content = re.sub(
+        r'header\s*{\s*background-color:\s*#F1F4FF;\s*}',
+        'header {\n display: None;\n}',
+        content
+    )
+    # Save the updated HTML back to file
+    with open(os.path.join(f'{settings.BASE_DIR}/reports',f'{report.id}.html'), 'w', encoding='utf-8') as file:
+        file.write(updated_content)
     return
 
 @login_required
