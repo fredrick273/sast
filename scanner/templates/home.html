@@ -444,14 +444,14 @@
         
         <div class="page-title">
             <button class="page-title-btn">
-                <span>◆ New Web Service</span>
+                <span>Code Scan</span>
             </button>
         </div>
         
         <div class="action-buttons">
             <div class="action-button">
                 <button class="action-btn">
-                    <span>+ New</span>
+                    <span><a href="{% url 'add_list' %}">+ New</a></span>
                 </button>
             </div>
             
@@ -468,11 +468,11 @@
         <div class="main-content">
             <h1 class="content-title">Connected Repositories</h1>
             
-            <div class="flex-row">
+            <!-- <div class="flex-row">
                 <div class="search-container" style="flex-grow: 1;">
                     <input type="text" placeholder="Search">
                 </div>
-            </div>
+            </div> -->
             
             <div class="repo-list">
                 {% for repo in repos %}
